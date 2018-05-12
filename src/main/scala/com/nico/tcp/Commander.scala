@@ -10,19 +10,41 @@ import akka.actor.{Actor, ActorLogging, Props}
 import akka.io.{IO, Tcp}
 
 
-class Commander(endpoint: InetSocketAddress) extends Actor with ActorLogging {
+class Commander(endpoint: InetSocketAddress, streamerName: StreamerName) extends Actor with ActorLogging {
   import Commander._
+  import StreamerName._
+  
   override def receive: Receive = {
-    case StartServer   =>    IO(Tcp)(context.system) ! Tcp.Bind(self, endpoint)
+    case StartServer                =>  IO(Tcp)(context.system) ! Tcp.Bind(self, endpoint)
     case Tcp.Connected(remote, _)   =>  {
       log.debug(s"Remote address $remote connected")
-      sender ! Tcp.Register(context.actorOf(Streamer.props(remote, sender)))
+      log.debug(s"Starting streamer: ${streamerName}...")
+
+      val selectedStreamerProps = getStreamerProps(remote)
+
+      sender ! Tcp.Register(context.actorOf(selectedStreamerProps))
     }
+  }
+
+  private def getStreamerProps(remote: InetSocketAddress) = streamerName match {
+    case RandomNumbers => Streamer.props(remote, sender)
   }
 }
 
 object Commander {
-  def props(port: Int): Props = Props(new Commander(new InetSocketAddress("localhost", port)))
+  def props(port: Int, name: String): Props = Props(new Commander(new InetSocketAddress("localhost", port), StreamerName(name)))
 
   case class StartServer()
 }
+
+trait StreamerName
+
+object StreamerName {
+  def apply(name: String): StreamerName = name match {
+    case "rn" =>  RandomNumbers
+    case _    =>  throw new Exception("Streamer name not found")
+  }
+
+  case object RandomNumbers extends StreamerName
+}
+ 

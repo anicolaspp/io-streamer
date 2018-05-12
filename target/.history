@@ -1,1 +1,5 @@
 run 9091
+sbt compile
+package
+exit
+run 9090

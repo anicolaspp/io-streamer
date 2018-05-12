@@ -17,15 +17,15 @@ class Streamer(remote: InetSocketAddress, connection: ActorRef) extends Actor wi
   val __ticks__ = "__TICKS__"
   context.watch(connection)
 
-  override def receive: Actor.Receive = {
+  override def receive: Receive = {
     case Tcp.Received(data) => {
       data.utf8String.trim match {
-        case "start" => context.system.scheduler.schedule(1 seconds, 200 milliseconds, self, (__ticks__, sender))
-        case "stop" => sender ! Tcp.Close
+        case initCmd if initCmd.startsWith("start:")  => context.system.scheduler.schedule(1 seconds, initCmd.split(":")(1).toInt milliseconds, self, (__ticks__, sender))
+        case _        => sender ! Tcp.Close
       }
     }
 
-    case (__ticks__, s: ActorRef) => self ! Streamer.Send(Random.nextString(10), s)
+    case (`__ticks__`, s: ActorRef) => self ! Streamer.Send(data = Random.nextInt().toString(), to = s)
 
     case Streamer.Send(data, to) => log.info(data)
       to ! Tcp.Write(ByteString(data + "\n"))

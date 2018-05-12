@@ -10,9 +10,12 @@ object app {
 
   def main(args: Array[String]) {
 
-    val system = ActorSystem("echo-server")
+    val system = ActorSystem("streamer-server")
 
-    val commander = system.actorOf(Commander.props(args(0).toInt))
+    val port = args(0).toInt
+    val streamerName = args(1)
+
+    val commander = system.actorOf(Commander.props(port, streamerName))
     commander ! Commander.StartServer
 
     scala.io.StdIn.readLine()
