@@ -17,8 +17,8 @@ class SalesStreamer(remote: InetSocketAddress, connection: ActorRef) extends Act
     override def receive: Receive = {
         case Tcp.Received(data) => {
             data.utf8String.trim match {
-            case initCmd if initCmd.startsWith("start:")  => context.system.scheduler.schedule(1 seconds, initCmd.split(":")(1).toInt milliseconds, self, (__ticks__, sender))
-            case _        => sender ! Tcp.Close
+                case initCmd if initCmd.startsWith("start:")  => context.system.scheduler.schedule(1 seconds, initCmd.split(":")(1).toInt milliseconds, self, (__ticks__, sender))
+                case _        => sender ! Tcp.Close
             }
         }
 
