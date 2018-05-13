@@ -28,6 +28,7 @@ class Commander(endpoint: InetSocketAddress, streamerName: StreamerName) extends
 
   private def getStreamerProps(remote: InetSocketAddress) = streamerName match {
     case RandomNumbers => Streamer.props(remote, sender)
+    case RandomSales   => SalesStreamer.props(remote, sender)
   }
 }
 
@@ -42,9 +43,11 @@ trait StreamerName
 object StreamerName {
   def apply(name: String): StreamerName = name match {
     case "rn" =>  RandomNumbers
+    case "rs" =>  RandomSales
     case _    =>  throw new Exception("Streamer name not found")
   }
 
   case object RandomNumbers extends StreamerName
+  case object RandomSales extends StreamerName
 }
  
