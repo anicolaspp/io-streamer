@@ -78,4 +78,3 @@ object SalesStreamer {
 
   case class Item(id: String, price: Double)
 }
-
