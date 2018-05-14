@@ -11,7 +11,7 @@ import SalesStreamer._
 
 class SalesStreamer(remote: InetSocketAddress, connection: ActorRef) extends Actor {
     
-    val __ticks__ = "__TICKS__"
+    private val __ticks__ = "__TICKS__"
     context.watch(connection)
 
     override def receive: Receive = {
