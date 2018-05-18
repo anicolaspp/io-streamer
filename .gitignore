@@ -6,12 +6,17 @@
 .history
 .lib/
 dist/*
-target/
+target/*
 lib_managed/
 src_managed/
 project/boot/
-project/plugins/project/
+project/plugins/project/*
+project/target/
 
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
+project/target/resolution-cache/default/streaming-server-io-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.xml
+*.properties
+project/target/resolution-cache/default/streaming-server-io-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.properties
+project/project/target/config-classes/$6f39ca09029b54cda8d0.cache
