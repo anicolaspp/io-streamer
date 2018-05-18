@@ -15,15 +15,17 @@ object app {
     val port = args(0).toInt
     val streamerName = args(1)
 
-    runCommander(port, streamerName)
-    
-    scala.io.StdIn.readLine()
+    run(port, streamerName)
 
     system.terminate()
   }
 
-  def runCommander(port: Int, name: String)(implicit system: ActorSystem) = Commander.props(port, name) match {
-    case None         =>  println(s"Streamer ${name} not found")
-    case Some(props)  =>  system.actorOf(props) ! Commander.StartServer
-  }
+  def run(port: Int, name: String)(implicit system: ActorSystem) = 
+    Commander
+      .props(port, name)
+      .map(system.actorOf(_))
+      .foreach(commander => {
+        commander ! Commander.StartServer
+        scala.io.StdIn.readLine()
+      })
 }

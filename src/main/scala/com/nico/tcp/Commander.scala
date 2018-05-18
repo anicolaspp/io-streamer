@@ -33,8 +33,8 @@ class Commander(endpoint: InetSocketAddress, streamerName: StreamerName) extends
 }
 
 object Commander {
-  def props(port: Int, name: String): Props = Props(new Commander(new InetSocketAddress("localhost", port), StreamerName(name)))
+  def props(port: Int, name: String): Option[Props] = 
+     StreamerName(name).map(name => Props(new Commander(new InetSocketAddress("localhost", port), name)))
 
   case class StartServer()
 }
-

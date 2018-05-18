@@ -3,10 +3,7 @@ package com.nico.tcp
 sealed trait StreamerName
 
 object StreamerName {
-  def apply(name: String): StreamerName = selector.get(name) match {
-    case None       =>  throw new Exception("Streamer name not found")
-    case Some(name) =>  name
-  }
+  def apply(name: String): Option[StreamerName] = selector.get(name)
 
   private val selector = Map(
     "rn" -> RandomNumbers,
