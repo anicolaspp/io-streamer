@@ -20,3 +20,6 @@ project/target/resolution-cache/default/streaming-server-io-build/scala_2.10/sbt
 *.properties
 project/target/resolution-cache/default/streaming-server-io-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.properties
 project/project/target/config-classes/$6f39ca09029b54cda8d0.cache
+*.xml
+.idea/.name
+*.iml
