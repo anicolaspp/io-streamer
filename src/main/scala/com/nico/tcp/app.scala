@@ -15,12 +15,12 @@ object app {
     val port = args(0).toInt
     val streamerName = args(1)
 
-    run(port, streamerName)
+    runWith(port, streamerName)
 
     system.terminate()
   }
 
-  def run(port: Int, name: String)(implicit system: ActorSystem) = 
+  def runWith(port: Int, name: String)(implicit system: ActorSystem): Unit = 
     Commander
       .props(port, name)
       .map(system.actorOf(_))
