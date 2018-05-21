@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 
 object Predef {
 
-  implicit class Termination[A](option: Option[A]) {
-    def terminate()(implicit system: ActorSystem) = system.terminate()
+  implicit class Termination(option: Option[Unit]) {
+    def terminateActorSystem()(implicit system: ActorSystem) = system.terminate()
   }
 }

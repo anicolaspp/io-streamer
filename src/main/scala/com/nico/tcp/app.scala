@@ -15,7 +15,7 @@ object app {
     Configuration
       .parse(args)
       .map(run)
-      .terminate()
+      .terminateActorSystem()
 
   def run(config: Configuration)(implicit system: ActorSystem): Unit =
     Commander
