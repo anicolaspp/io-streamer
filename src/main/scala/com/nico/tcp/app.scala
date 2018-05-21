@@ -5,25 +5,22 @@
 package com.nico.tcp
 
 import akka.actor._
+import com.nico.tcp.Predef._
 
 object app {
 
-  def main(args: Array[String]) {
+  implicit val system = ActorSystem("streamer-server")
 
-    implicit val system = ActorSystem("streamer-server")
-
-    val port = args(0).toInt
-    val streamerName = args(1)
-
-    runWith(port, streamerName)
-
-    system.terminate()
-  }
-
-  def runWith(port: Int, name: String)(implicit system: ActorSystem): Unit = 
+  def main(args: Array[String]): Unit =
+    Configuration
+      .parse(args)
+      .map(run)
+      .terminate()
+  
+  def run(config: Configuration)(implicit system: ActorSystem): Unit =
     Commander
-      .props(port, name)
-      .map(system.actorOf(_))
+      .props(config.port, config.name)
+      .map(system.actorOf)
       .foreach(commander => {
         commander ! Commander.StartServer
         scala.io.StdIn.readLine()
