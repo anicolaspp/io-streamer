@@ -16,7 +16,7 @@ object app {
       .parse(args)
       .map(run)
       .terminate()
-  
+
   def run(config: Configuration)(implicit system: ActorSystem): Unit =
     Commander
       .props(config.port, config.name)

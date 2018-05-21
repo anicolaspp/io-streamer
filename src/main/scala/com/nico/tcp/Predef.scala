@@ -5,9 +5,6 @@ import akka.actor.ActorSystem
 object Predef {
 
   implicit class Termination[A](option: Option[A]) {
-    def terminate()(implicit system: ActorSystem) =
-      option
-        .map(_ => system.terminate())
-        .getOrElse(system.terminate())
+    def terminate()(implicit system: ActorSystem) = system.terminate()
   }
 }
