@@ -4,8 +4,10 @@ sealed trait StreamerName
 
 object StreamerName {
   def apply(name: String): Option[StreamerName] = selector.get(name)
+  
+  def names = selector.keys.toList
 
-  lazy val selector = Map(
+  private lazy val selector = Map(
     "rn" -> RandomNumbers,
     "rs" -> RandomSales
   )

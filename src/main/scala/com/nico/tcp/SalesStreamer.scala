@@ -24,9 +24,13 @@ class SalesStreamer(remote: InetSocketAddress, connection: ActorRef) extends Act
         case (data: Sale, to: ActorRef) =>  to ! Tcp.Write(ByteString(encode(data) + "\n"))
     }
 
-    private def generateRandomSale() = Sale(Random.nextInt.toString, Item(Random.nextInt.toString, Random.nextDouble), java.time.LocalDate.now)
+    private def generateRandomSale() = Sale(randomId, Item(randomId, randomPrice), java.time.LocalDate.now)
 
     private def encode(sale: Sale) = s"{sale: {id: ${sale.id}, item: {itemId: ${sale.item.id}, price: ${sale.item.price}}, time: ${sale.time.toString}}}"
+    
+    private def randomId = Random.nextInt(100000).toString
+
+    private def randomPrice = Random.nextDouble() * 100
 }
 
 object SalesStreamer {

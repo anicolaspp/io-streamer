@@ -27,7 +27,7 @@ class Commander(endpoint: InetSocketAddress, streamerName: StreamerName) extends
   }
   
   private def propsFor(remote: InetSocketAddress) = streamerName match {
-    case RandomNumbers => Streamer.props(remote, sender)
+    case RandomNumbers => RandomNumbersStreamer.props(remote, sender)
     case RandomSales => SalesStreamer.props(remote, sender)
   }
 

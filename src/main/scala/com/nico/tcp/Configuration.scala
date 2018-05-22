@@ -30,6 +30,6 @@ object Configuration {
       StreamerName
         .apply(name)
         .map(_ => success)
-        .getOrElse(failure(s"Possible names: ${StreamerName.selector.keys.mkString(",")}"))
+        .getOrElse(failure(s"Possible names: ${StreamerName.names.mkString(",")}"))
   }
 }
