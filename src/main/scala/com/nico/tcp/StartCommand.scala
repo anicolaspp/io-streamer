@@ -6,25 +6,24 @@ sealed trait StartCommand
 
 object StartCommand {
 
-  implicit class toStartCommand(s: String) {
+  implicit class StringOps(s: String) {
+
     def toCmd(): StartCommand =
       if (s.startsWith("start:")) {
-        makeInt(s.split(":")(1))
-          .map(StartWithTime)
-          .getOrElse(InvalidStart)
+        makeInt(s.split(":")(1)).map(StartWithTime).getOrElse(InvalidStart)
       } else {
         InvalidStart
       }
+
+    private def makeInt(s: String) = Try {
+      s.toInt
+    }
   }
 
-  private def makeInt(s: String) = Try {
-    s.toInt
-  }
 
   case class StartWithTime(rate: Int) extends StartCommand
 
   case object InvalidStart extends StartCommand
-
 }
 
 
