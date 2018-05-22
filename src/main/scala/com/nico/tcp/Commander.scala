@@ -38,6 +38,5 @@ object Commander {
   def props(port: Int, name: String): Option[Props] =
     StreamerName(name).map(name => Props(new Commander(new InetSocketAddress("localhost", port), name)))
 
-  case class StartServer()
-
+  case object StartServer
 }

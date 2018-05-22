@@ -3,31 +3,23 @@ package com.nico.tcp
 import java.net.InetSocketAddress
 
 import akka.actor._
-import akka.io.Tcp
 import akka.util.ByteString
 import com.nico.tcp.SalesStreamer._
-import com.nico.tcp.Ticks._
 
 import scala.util.Random
 
-class SalesStreamer(remote: InetSocketAddress, connection: ActorRef) extends Actor with DataReceiver {
+class SalesStreamer(remote: InetSocketAddress, connection: ActorRef)
+  extends Actor
+    with ActorStreamer[Sale] {
     
     context.watch(connection)
 
-    override def receive: Receive = {
-        case Tcp.Received(data) => handle(data)
+    override def receive: Receive = customReceiver(remote, connection)
 
-        case Terminated(`connection`)   =>  context.stop(self)
+    override def get(): Sale = Sale(randomId, Item(randomId, randomPrice), java.time.LocalDate.now)
 
-        case (`__ticks__`, s: ActorRef) =>  self ! (generateRandomSale(), s)
+    override def encode(data: Sale): ByteString = ByteString(s"{sale: {id: ${data.id}, item: {itemId: ${data.item.id}, price: ${data.item.price}}, time: ${data.time.toString}}}\n")
 
-        case (data: Sale, to: ActorRef) =>  to ! Tcp.Write(ByteString(encode(data) + "\n"))
-    }
-
-    private def generateRandomSale() = Sale(randomId, Item(randomId, randomPrice), java.time.LocalDate.now)
-
-    private def encode(sale: Sale) = s"{sale: {id: ${sale.id}, item: {itemId: ${sale.item.id}, price: ${sale.item.price}}, time: ${sale.time.toString}}}"
-    
     private def randomId = Random.nextInt(100000).toString
 
     private def randomPrice = Random.nextDouble() * 100

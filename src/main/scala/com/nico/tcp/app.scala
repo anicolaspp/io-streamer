@@ -9,7 +9,7 @@ import com.nico.tcp.Predef._
 
 object app {
 
-  implicit val system = ActorSystem("streamer-server")
+  implicit val system: ActorSystem = ActorSystem("streamer-server")
 
   def main(args: Array[String]): Unit =
     Configuration
