@@ -9,9 +9,11 @@ object StreamerName {
 
   private lazy val selector = Map(
     "rn" -> RandomNumbers,
-    "rs" -> RandomSales
+    "rs" -> RandomSales,
+    "rstr" -> RandomStrings
   )
 
   case object RandomNumbers extends StreamerName
   case object RandomSales extends StreamerName
+  case object RandomStrings extends StreamerName
 }
