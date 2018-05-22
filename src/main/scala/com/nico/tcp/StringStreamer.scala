@@ -10,6 +10,9 @@ import scala.util.Random
 class StringStreamer(remote: InetSocketAddress, connection: ActorRef)
   extends Actor
     with ActorStreamer[String] {
+
+    context.watch(connection)
+
     override def receive: Receive = customReceiver(remote, connection)
 
     override def get(): String = Random.nextString(10)

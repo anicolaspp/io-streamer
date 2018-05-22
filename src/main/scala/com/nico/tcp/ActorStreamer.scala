@@ -4,7 +4,6 @@ import java.net.InetSocketAddress
 
 import akka.actor.Actor.Receive
 import akka.actor.{ActorContext, ActorRef, Terminated}
-import akka.event.LoggingReceive
 import akka.io.Tcp
 import akka.util.ByteString
 import com.nico.tcp.Predef._
