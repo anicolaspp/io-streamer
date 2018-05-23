@@ -1,4 +1,4 @@
-package com.nico.tcp
+package com.nico.tcp.handlers
 
 import scala.util.Try
 
@@ -19,8 +19,7 @@ object StartCommand {
       s.toInt
     }
   }
-
-
+  
   case class StartWithTime(rate: Int) extends StartCommand
 
   case object InvalidStart extends StartCommand

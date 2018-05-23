@@ -6,6 +6,8 @@ package com.nico.tcp
 
 import akka.actor._
 import com.nico.tcp.Predef._
+import com.nico.tcp.conf.Configuration
+import com.nico.tcp.handlers.Commander
 
 object app {
 

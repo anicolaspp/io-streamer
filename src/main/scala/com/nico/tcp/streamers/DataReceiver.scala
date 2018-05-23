@@ -1,10 +1,10 @@
-package com.nico.tcp
+package com.nico.tcp.streamers
 
 import akka.actor.ActorContext
 import akka.io.Tcp
 import akka.util.ByteString
 import com.nico.tcp.Predef._
-import com.nico.tcp.StartCommand._
+import com.nico.tcp.handlers.StartCommand._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._

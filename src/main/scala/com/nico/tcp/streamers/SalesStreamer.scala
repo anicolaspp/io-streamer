@@ -1,10 +1,10 @@
-package com.nico.tcp
+package com.nico.tcp.streamers
 
 import java.net.InetSocketAddress
 
 import akka.actor._
 import akka.util.ByteString
-import com.nico.tcp.SalesStreamer._
+import com.nico.tcp.streamers.SalesStreamer.{Item, Sale}
 
 import scala.util.Random
 

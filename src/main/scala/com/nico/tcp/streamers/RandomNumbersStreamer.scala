@@ -1,7 +1,7 @@
 /**
   * Created by anicolaspp on 6/8/16.
   */
-package com.nico.tcp
+package com.nico.tcp.streamers
 
 import java.net.InetSocketAddress
 

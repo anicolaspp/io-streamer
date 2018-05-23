@@ -1,4 +1,4 @@
-package com.nico.tcp
+package com.nico.tcp.handlers
 
 sealed trait StreamerName
 

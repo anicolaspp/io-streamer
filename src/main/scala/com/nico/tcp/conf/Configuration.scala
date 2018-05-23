@@ -1,5 +1,6 @@
-package com.nico.tcp
+package com.nico.tcp.conf
 
+import com.nico.tcp.handlers.StreamerName
 import scopt.OptionParser
 
 case class Configuration(port: Int = 9090, name: String = "")
