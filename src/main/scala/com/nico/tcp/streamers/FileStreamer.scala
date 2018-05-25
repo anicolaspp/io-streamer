@@ -34,14 +34,20 @@ class FileStreamer(remote: InetSocketAddress, connection: ActorRef, path: String
       .map { case (line, index) => FileFragment(name, index, line) }
   }
 
-  private def readFolderFiles(path: String) = Try {
+  private def readFolderFiles(path: String): Stream[String] = Try {
     new java.io.File(path).list()
   }
-    .map(_.toStream).getOrElse(Stream.empty)
+    .map(_.toStream)
+    .getOrElse(Stream.empty)
+    .map(name => s"$path/$name")
+    .filter(name => {
+      println(name)
+      new java.io.File(name).isFile
+    })
 }
 
 object FileStreamer {
-  def apply(remote: InetSocketAddress, actor: ActorRef, path: String): Props =
+  def props(remote: InetSocketAddress, actor: ActorRef, path: String): Props =
     Props(new FileStreamer(remote, actor, path))
 
   sealed trait Fragment

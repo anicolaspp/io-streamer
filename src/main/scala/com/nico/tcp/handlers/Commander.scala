@@ -9,8 +9,9 @@ import java.net.InetSocketAddress
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.io.{IO, Tcp}
 import com.nico.tcp.handlers.Commander.StartServer
-import com.nico.tcp.handlers.StreamerName.{RandomNumbers, RandomSales, RandomStrings}
-import com.nico.tcp.streamers.{RandomNumbersStreamer, SalesStreamer, StringStreamer}
+import com.nico.tcp.handlers.StreamerName.{Files, RandomNumbers, RandomSales, RandomStrings}
+import com.nico.tcp.streamers.{FileStreamer, RandomNumbersStreamer, SalesStreamer, StringStreamer}
+import com.typesafe.config.{Config, ConfigFactory}
 
 class Commander(endpoint: InetSocketAddress, streamerName: StreamerName) extends Actor with ActorLogging {
 
@@ -31,6 +32,7 @@ class Commander(endpoint: InetSocketAddress, streamerName: StreamerName) extends
     case RandomNumbers  =>  RandomNumbersStreamer.props(remote, sender)
     case RandomSales    =>  SalesStreamer.props(remote, sender)
     case RandomStrings  =>  StringStreamer.props(remote, sender)
+    case Files          =>  FileStreamer.props(remote, sender, ConfigFactory.load().getString("folder"))
   }
 
   private def toActor(props: Props) = context.actorOf(props)
