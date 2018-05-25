@@ -3,13 +3,17 @@ package com.nico.tcp.conf
 import com.nico.tcp.handlers.StreamerName
 import scopt.OptionParser
 
-case class Configuration(port: Int = 9090, name: String = "")
+case class Configuration(port: Int, name: String)
 
 object Configuration {
 
-  def parse(args: Seq[String]): Option[Configuration] = parser.parse(args, Configuration())
+  def parse(args: Seq[String]): Option[Configuration] = parser.parse(args, Configuration.default)
 
-  private val parser: OptionParser[Configuration] = new scopt.OptionParser[Configuration]("IO-Streamer") {
+  def default: Configuration = DefaultConfig
+
+  private object DefaultConfig extends Configuration(9090, "rn")
+
+  private val parser = new scopt.OptionParser[Configuration]("IO-Streamer") {
     head("IO-Streamer")
 
     opt[Int]('p', "port")
