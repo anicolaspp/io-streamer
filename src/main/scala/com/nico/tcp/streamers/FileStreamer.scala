@@ -21,8 +21,8 @@ class FileStreamer(remote: InetSocketAddress, connection: ActorRef, path: String
   override def get(): Fragment = if (fragments.hasNext) fragments.next() else FinalFragment
 
   override def encode(data: Fragment): ByteString = data match {
-    case FileFragment(fileName, fragmentId, content)  => ByteString(s"{path: $fileName, id: $fragmentId, content: $content}")
-    case FinalFragment                                => ByteString("{}")
+    case FileFragment(fileName, fragmentId, content) => ByteString(s"{path: $fileName, id: $fragmentId, content: $content}")
+    case FinalFragment => ByteString("{}")
   }
 
   private def splitFile(name: String): Stream[FileFragment] = {
@@ -31,13 +31,12 @@ class FileStreamer(remote: InetSocketAddress, connection: ActorRef, path: String
       .getLines()
       .toStream
       .zipWithIndex
-      .map { case (line, index) => FileFragment(name, index, line)}
+      .map { case (line, index) => FileFragment(name, index, line) }
   }
 
   private def readFolderFiles(path: String) = Try {
     new java.io.File(path).list()
   }
-    .toOption
     .map(_.toStream).getOrElse(Stream.empty)
 }
 
@@ -48,5 +47,7 @@ object FileStreamer {
   sealed trait Fragment
 
   case class FileFragment(fileName: String, fragmentId: Int, content: String) extends Fragment
+
   case object FinalFragment extends Fragment
+
 }
