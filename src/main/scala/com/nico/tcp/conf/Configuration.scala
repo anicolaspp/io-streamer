@@ -15,12 +15,14 @@ object Configuration {
     opt[Int]('p', "port")
       .action((p, config) => config.copy(port = p))
       .required()
+      .maxOccurs(1)
       .validate(validatePort)
       .text("Port to bind the server")
 
     opt[String]('n', "streamer-name")
       .action((name, config) => config.copy(name = name))
       .required()
+      .maxOccurs(1)
       .validate(validateName)
       .text("Name of the streamer to be used")
 
