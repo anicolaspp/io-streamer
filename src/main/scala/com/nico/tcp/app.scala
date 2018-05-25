@@ -4,6 +4,7 @@
 
 package com.nico.tcp
 
+import akka.Done
 import akka.actor._
 import com.nico.tcp.Predef._
 import com.nico.tcp.conf.Configuration
@@ -19,12 +20,14 @@ object app {
       .map(run)
       .terminateActorSystem()
 
-  def run(config: Configuration)(implicit system: ActorSystem): Unit =
+  def run(config: Configuration)(implicit system: ActorSystem): Done =
     Commander
       .props(config.port, config.name)
       .map(system.actorOf)
-      .foreach(commander => {
+      .map(commander => {
         commander ! Commander.StartServer
         scala.io.StdIn.readLine()
+        Done
       })
+      .getOrElse(Done)
 }
